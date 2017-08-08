@@ -1,0 +1,56 @@
+package openingbrowser;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class CorporateSignup {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver","C:\\selenium-java-3.4.0\\chromedriver\\chromedriver.exe");
+		WebDriver d = new ChromeDriver();
+		d.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+		d.get("http://staging.instarem.com");
+		d.manage().window().maximize();
+		WebElement signup = d.findElement(By.xpath(".//*[@id='asignup']"));
+		signup.click();
+		Thread.sleep(3000);
+		WebElement email = d.findElement(By.id("txtEmailId"));
+		email.click();
+		email.sendKeys("qa7@instarem.com");
+		WebElement p1 =d.findElement(By.xpath(".//*[@id='txtPassword']"));
+		p1.click();
+		p1.sendKeys("Insta@123");
+		WebElement p2 =d.findElement(By.id("txtConfirmPassword"));
+		p2.click();
+		p2.sendKeys("Insta@123");
+		Thread.sleep(3000);
+		WebElement button = d.findElement(By.xpath(".//*[@id='formRegistration']/p[4]/input"));
+		button.click();
+		Thread.sleep(3000);
+		WebElement Corporate = d.findElement(By.cssSelector("a#businessLink"));
+		Corporate.click();
+		Thread.sleep(3000);
+		
+		
+		WebElement ok = d.findElement(By.cssSelector("a#aRegister"));
+		ok.click();
+		
+		
+		boolean cmessage = d.findElement(By.xpath(".//*[@id='formRegistration']/p[4]/input")).isDisplayed();
+		if(cmessage="Registration successful. Please check your mail to activate your account." != null)
+		{
+			System.out.println("Test case pass");
+		}
+		else
+		{
+			System.out.println("Test case failed");
+		}
+		d.quit();
+	}
+
+}
