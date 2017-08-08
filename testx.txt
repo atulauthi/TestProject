@@ -1,0 +1,40 @@
+package openingbrowser;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+
+
+	public class Login{
+		@Test
+		public void login() throws InterruptedException {
+			// TODO Auto-generated method stub
+	      System.setProperty("webdriver.chrome.driver","C:\\selenium-java-3.4.0\\chromedriver\\chromedriver.exe");
+	      WebDriver d = new ChromeDriver();
+	      d.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+			d.get("http://staging.instarem.com");
+			d.manage().window().maximize();
+			WebElement signin = d.findElement(By.xpath(".//*[@id='aSignIn']"));
+			signin.click();
+	        WebElement p1 = d.findElement(By.xpath(".//*[@id='UserName']"));
+	        p1.sendKeys("a@instarem.com");
+	        WebElement p2 = d.findElement(By.xpath(".//*[@id='Password']"));
+	        p2.sendKeys("Insta@123");
+	        WebElement button = d.findElement(By.xpath(".//*[@id='InstaValidate']"));
+			button.click();
+			Thread.sleep(5000);
+			boolean cmessage = d.findElement(By.xpath(".//*[@id='instaUserLink']/li[5]/div[2]/p")).isDisplayed();
+			if(cmessage="Welcome John" != null)
+			{
+				System.out.println("Login Successful");
+			}
+			else
+			{
+				System.out.println("Login failed");
+			}
+			d.quit();
+		}
+
+	}
