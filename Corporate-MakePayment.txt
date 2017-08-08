@@ -1,0 +1,161 @@
+package openingbrowser;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+public class CorpMP {
+
+public static String driverPath = "C:\\selenium-java-3.4.0\\geckodriver\\geckodriver.exe";
+public static WebDriver driver;
+
+public static void main(String []args) throws InterruptedException {
+System.out.println("launching Firefox browser");
+System.setProperty("webdriver.gecko.driver","C:\\selenium-java-3.4.0\\geckodriver\\geckodriver.exe");
+driver = new FirefoxDriver();
+driver.manage().window().maximize();
+driver.navigate().to("http://staging.instarem.com");
+driver.findElement(By.id("aSignIn")).click();
+Thread.sleep(3000);
+driver.findElement(By.id("UserName")).sendKeys("qa1@instarem.com");
+driver.findElement(By.id("Password")).sendKeys("Insta@123");
+driver.findElement(By.id("InstaValidate")).click();
+driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+Thread.sleep(3000);
+
+//select from country
+Thread.sleep(1000);
+driver.findElement(By.cssSelector("div#ddlfrom a#fromLink")).click();	
+List<WebElement> fromcountry = driver.findElements(By.cssSelector("ul#ulfrom div[id^= 'mCSB'] div[id^='mCSB'] li"));
+System.out.println(fromcountry.size());
+for(int i = 0; i < fromcountry.size(); i++)
+{
+System.out.println(fromcountry.get(i).getText());
+}
+for (WebElement fromcurr : fromcountry) 
+{           
+if (fromcurr.getText().equals("AUSTRALIAN DOLLAR")) {fromcurr.click();
+}
+
+
+//select to country
+Thread.sleep(3000);
+driver.findElement(By.cssSelector("div#ddlto a#toLink")).click();
+List<WebElement> tocountry = driver.findElements(By.cssSelector("ul#ulto div[id^= 'mCSB'] div[id^='mCSB'] li"));
+System.out.println(tocountry.size());
+for(int i = 0; i < tocountry.size(); i++)
+{
+System.out.println(tocountry.get(i).getText());
+}
+for (WebElement tocurr : tocountry)
+{
+if (tocurr.getText().equals("INDIAN RUPEE")) {tocurr.click();
+}
+
+//enter the transfer amount
+driver.findElement(By.id("txtSendAmount")).clear();
+Thread.sleep(1000);
+driver.findElement(By.id("txtSendAmount")).sendKeys("61.90");
+
+ //select source of fund drop down
+driver.findElement(By.cssSelector("div#sourceoffund")).click();	
+List<WebElement> sourcefunds = driver.findElements(By.cssSelector("ul#ulSourceOfFund div[id^= 'mCSB'] div[id^='mCSB'] li")); 
+System.out.println(sourcefunds.size());
+for(int j = 0; j < sourcefunds.size(); j++)
+{
+System.out.println(sourcefunds.get(j).getText());
+}
+for (WebElement sf : sourcefunds )
+{           
+if (sf.getText().equals("INVESTMENTS")) {sf.click();}	
+}	
+
+//click on submit button
+driver.findElement(By.xpath(".//*[@id='transSubmit']")).click();
+//c.click();
+Thread.sleep(1000);
+
+//select recipient details
+driver.findElement(By.cssSelector("input#txtFirstName")).sendKeys("Rohit");
+driver.findElement(By.cssSelector("input#txtLastName")).sendKeys("Sharma");
+driver.findElement(By.cssSelector("input#txtEmail")).sendKeys("rs@sr.in");
+driver.findElement(By.cssSelector("a#toPayeeLink")).click();
+driver.manage().timeouts().implicitlyWait(1000, TimeUnit.SECONDS);
+
+//select Payee country
+List<WebElement> country=driver.findElements(By.cssSelector("ul#ulcountryPayee div[id^= 'mCSB'] div[id^='mCSB'] li"));
+System.out.println(country.size());
+for(int j = 0; j < country.size(); j++)
+{
+	System.out.println(country.get(j).getText());
+}
+for (WebElement co : country )
+{           
+if (co.getText().equals("SINGAPORE")) {co.click();}	
+}
+
+//enter address info
+driver.findElement(By.cssSelector("input#PayeeAddress")).sendKeys("MG Road");
+Thread.sleep(1000);
+driver.findElement(By.cssSelector("input#PayeePostCode")).sendKeys("400078");
+Thread.sleep(1000);
+driver.findElement(By.cssSelector("input#txtMobile")).sendKeys("9854697567");
+
+//select relationship drop down
+driver.findElement(By.cssSelector("div#relationContainer div#ddlRelation")).click();
+driver.manage().timeouts().implicitlyWait(1000, TimeUnit.SECONDS);
+List<WebElement> relationship=driver.findElements(By.cssSelector("ul#ulRelation li"));
+System.out.println(relationship.size());
+for(int i=0;i<relationship.size();i++)
+{
+	System.out.println(relationship.get(i).getText());
+}
+for (WebElement re : relationship )
+{
+	if(re.getText().equals("Relatives"))  {re.click();}
+}
+
+//enter bank details
+Thread.sleep(1000);
+driver.findElement(By.cssSelector("input#txt-swift")).sendKeys("QWQE1122113");
+Thread.sleep(1000);
+driver.findElement(By.cssSelector("input#txtBank")).sendKeys("HDFC Bank");
+Thread.sleep(1000);
+driver.findElement(By.cssSelector("input#txtAccntNo")).sendKeys("987654321");
+Thread.sleep(1000);
+driver.findElement(By.cssSelector("input#txtReAccntNo")).sendKeys("987654321");
+
+//select reason for transfer from drop down 
+driver.findElement(By.cssSelector("div#PurposeCodeContainer div#PurposeCode")).click();
+driver.manage().timeouts().implicitlyWait(1000, TimeUnit.SECONDS);
+List<WebElement> rft=driver.findElements(By.cssSelector("ul#ulPurposeCode div[id^= 'mCSB'] div[id^= 'mCSB'] li"));
+System.out.println(rft.size());
+for(int i=0;i<rft.size();i++)
+{
+	System.out.println(rft.get(i).getText());
+}
+for (WebElement rf : rft )
+{
+	if(rf.getText().equals("INSURANCE PREMIUM")) {rf.click();}
+}
+
+//click on submit button
+driver.findElement(By.cssSelector("input#btnSave")).click();
+}
+Thread.sleep(20000);
+
+//select the radio button
+WebElement banktransferimage = driver.findElement(By.id("A8"));
+banktransferimage.click();
+driver.findElement(By.cssSelector("input#btnMakePayment")).click();
+
+driver.quit();
+} //public static close
+} //class close
+}
+
+
+
